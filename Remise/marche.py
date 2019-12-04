@@ -26,8 +26,7 @@ class Marche():
     def generate_C(self):
         direction = random.randrange(4)
         previous_step = self.get_previous_step()
-        step = previous_step
-
+        
         # Haut
         if direction == 0:
             step[1] = previous_step[1] + 1
