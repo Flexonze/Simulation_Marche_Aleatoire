@@ -25,23 +25,23 @@ class Marche():
         
     def generate_C(self):
         direction = random.randrange(4)
-        previous_step = self.get_previous_step()
-        
+        step = self.get_previous_step()
+
         # Haut
         if direction == 0:
-            step[1] = previous_step[1] + 1
+            step = [step[0], step[1] + 1]
 
         # Bas
         elif direction == 1:
-            step[1] = previous_step[1] - 1
+            step = [step[0], step[1] - 1]
 
         # Gauche
         elif direction == 2:
-            step[0] = previous_step[0] - 1
+            step = [step[0] - 1, step[1]]
 
         # Droite
         elif direction == 3:
-            step[0] = previous_step[0] + 1
+            step = [step[0] + 1, step[1]]
 
         return step
 
@@ -54,10 +54,14 @@ class Marche():
         step = self.get_previous_step()
         return step
 
-    def generate_i_steps(self, i, walk_type):
-        for j in range(i):
+    def generate_z_steps(self, z, walk_type):
+        for z in range(z):
             self.generate_step(walk_type)
 
-    def display_walk(self):
+    # Affiche en console les steps générées
+    def display_walk(self): 
         for step in self.steps:
             print(step)
+
+    def get_steps(self):
+        return self.steps
