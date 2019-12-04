@@ -45,10 +45,10 @@ class Modele(object):
         self.nbPas=5 # nombre de pas de simulation
         self.etat=0 # variable d'etat
 
-    def update(self): # update du modele
+    def update(self): # update du modele                                                            #Ici, l'on implémente le code afin de faire notre pas (2.)
         self.etat=self.etat+1 # mise a jour de l'etat du modele
 
-    def render(self,g): # rendering du modele dans le canvas Tk g
+    def render(self,g): # rendering du modele dans le canvas Tk g                                   #Ici, l'on doit modifier la fonction afin de faire afficher une petite ligne (create line)
         bfont=('times',14,'bold')
         bbox=(100,100,150,140)
         g.create_rectangle(bbox,width=1,outline="black",fill="yellow")
@@ -59,11 +59,11 @@ class Modele(object):
         # debut boucle de simulation de la dynamique
         for i in range(self.nbPas):
             # on opere le systeme pour un pas
-            self.update() 
+            self.update()                                                                           #Ici, le modèle fait 1 pas
             # rendering tkinter
             if self.g is not None: 
-                self.g.delete(ALL)
-                self.render(self.g)
+                self.g.delete(ALL)                                                                  #Mettre ça en commentaire afin de faire afficher toutes les lignes de la simulation
+                self.render(self.g)                                                                 #Ici, s'affiche le pas que nous avons fait
                 self.g.update(); sleep(self.refreshTk)
                 if i==0: sleep(self.waitTk) # on attends pour laisser voir l'etat initial
         # fin boucle de simulation de la dynamique
