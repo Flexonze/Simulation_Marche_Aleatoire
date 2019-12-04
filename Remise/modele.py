@@ -5,7 +5,7 @@ from time import sleep
 
 doRenderTk=True # choix de faire un rendering Tk ou pas
 
-class Modele(object):
+class Modele():
     """ Modele pour simulation. """
   
     def __init__(self, master=None):
@@ -22,24 +22,9 @@ class Modele(object):
             self.gframe=Frame(self.frame,bd=2,relief=RAISED)
             self.g=Canvas(self.gframe,bg='white',width=self.canvas_size[0],height=self.canvas_size[1]) 
             self.g.pack()
-            self.g.bind('<ButtonPress-1>', self.onClick1)      # click 1 (left)
-            self.g.bind('<ButtonPress-2>', self.onClick2)      # click 2 (centre)
-            self.g.bind('<ButtonPress-3>', self.onClick3)      # click 3 (right)
             self.gframe.pack(side=TOP)
             self.g.delete(ALL) # clean du canvas
         else: self.g=None
-
-    def onClick2(self, event):
-        """ On sleep pendant 1 a 60 secondes proportionnel a x, d'un click centre. """
-        sleep(int(60*event.x//self.canvas_size[0])+1)
-
-    def onClick1(self, event):
-        """ On ralentie l'affichage d'un % proportionnel a x (i.e. 0 a 100%), d'un click left. """
-        self.refreshTk*=1.0+event.x/self.canvas_size[0]
-
-    def onClick3(self, event):
-        """ On accelere l'affichage d'un % proportionnel a x (i.e. 0 a 100%), d'un click right. """
-        self.refreshTk*=0.5*event.x/self.canvas_size[0]
 
     def init_modele(self): # init du modele
         self.nbPas=5 # nombre de pas de simulation
