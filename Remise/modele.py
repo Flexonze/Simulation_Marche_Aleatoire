@@ -48,11 +48,6 @@ class Modele():
             self.current_step[1] * step_length + offset,
         )
 
-        bfont=('times', 14, 'bold')
-        bbox=(100, 100, 150, 140)
-        canvas.create_rectangle(bbox, width=1, outline="black", fill="yellow")
-        canvas.create_text((bbox[0] + 25, bbox[1] + 20), text=str(self.current_step), font=bfont, fill='black')
-
     def run(self):
         ############################################
         # debut boucle de simulation de la dynamique
