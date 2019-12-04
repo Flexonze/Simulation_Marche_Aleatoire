@@ -18,25 +18,27 @@ class Modele():
         self.current_step = self.steps[self.state]
         self.previous_step = self.current_step
 
-        if master is not None: # fenetre de rendering si necessaire
-            self.refreshTk=0.05
-            self.waitTk=3
-            self.frame = Frame(master)
-            self.frame.pack()
-            self.bframe = Frame(self.frame)
-            self.bframe.pack(side=TOP)
-            self.canvas_frame = Frame(self.frame, bd=2, relief=RAISED)
-            self.canvas=Canvas(self.canvas_frame, bg='white', width=1000, height=1000) 
-            self.canvas.pack()
-            self.canvas_frame.pack(side=TOP)
-            self.canvas.delete(ALL) # clean du canvas
-        else: self.g=None
+        if master is None:
+            self.g = None
+            return
+        
+        self.refreshTk=0.05
+        self.waitTk=3
+        self.frame = Frame(master)
+        self.frame.pack()
+        self.bframe = Frame(self.frame)
+        self.bframe.pack(side=TOP)
+        self.canvas_frame = Frame(self.frame, bd=2, relief=RAISED)
+        self.canvas=Canvas(self.canvas_frame, bg='white', width=1000, height=1000) 
+        self.canvas.pack()
+        self.canvas_frame.pack(side=TOP)
+        self.canvas.delete(ALL)
 
     # update du modele 
-    def update(self):                                                                                   #Ici, l'on implémente le code afin de faire notre pas (2.)
+    def update(self):
         self.previous_step = self.current_step
         self.state = self.state + 1 
-        if self.state < len(self.steps):                                                               # mise a jour de l'etat du modele
+        if self.state < len(self.steps):
             self.current_step = self.steps[self.state]
 
     # rendering du modele dans le canvas Tk
@@ -49,17 +51,12 @@ class Modele():
         )
 
     def run(self):
-        ############################################
-        # debut boucle de simulation de la dynamique
         for step in self.steps:
-            # on opere le systeme pour un pas
             self.update()
-            self.render(self.canvas)                                                                      #Ici, le modèle fait 1 pas
-            # rendering tkinter
-            if self.canvas is not None: 
-                # self.canvas.delete(ALL)                                                                  #Mettre ça en commentaire afin de faire afficher toutes les lignes de la simulation
-                self.render(self.canvas)                                                                 #Ici, s'affiche le pas que nous avons fait
+            self.render(self.canvas)
+
+            if self.canvas is not None:                                                                      
+                self.render(self.canvas)                                                                
                 self.canvas.update(); sleep(self.refreshTk)
-                #if i==0: sleep(self.waitTk) # on attends pour laisser voir l'etat initial
-        # fin boucle de simulation de la dynamique
-        ############################################
+
+        sleep(int(5))
