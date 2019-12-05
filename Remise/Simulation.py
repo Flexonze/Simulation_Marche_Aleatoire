@@ -7,7 +7,7 @@ import csv
 def generate_one_to_x_csv(number_of_steps, executions, walk_type):
     # Création d'un csv contenant la moyenne des distances au carrée de (executions) marches pour un nombre de pas allant de 1 jusqu'à (number_of_steps)
     averages = []
-    for x in range(number_of_steps):
+    for x in range(number_of_steps + 1):
         distances = []
         for i in range(executions):
             marche = Marche()
@@ -33,7 +33,7 @@ def main():
     marche = Marche()
     marche.generate_z_steps(number_of_steps, walk_type)
     window = Tk(); window.geometry("+0+0"); window.title("simulation")
-    modele = Modele(marche.get_steps(), master=window)
+    modele = Modele(marche.get_steps(), master=window, step_length=5)
     modele.run()
 
     # Génère et calcule la moyenne des distances au carrée des (executions) marches de (number_of_steps) pas

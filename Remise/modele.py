@@ -17,15 +17,24 @@ class Modele():
             self.g = None
             return
         
-        self.refreshTk=refresh_rate
-        self.waitTk=3
+        self.refreshTk = refresh_rate
+        self.waitTk = 3
+
+        # Frame et canvas s
         self.frame = Frame(master)
-        self.frame.pack()
+        self.frame.pack(expand=True, fill=BOTH)
         self.bframe = Frame(self.frame)
         self.bframe.pack(side=TOP)
         self.canvas_frame = Frame(self.frame, bd=2, relief=RAISED)
-        self.canvas=Canvas(self.canvas_frame, bg='white', width=width, height=height) 
-        self.canvas.pack()
+        self.canvas = Canvas(self.canvas_frame, bg='white', width=width, height=height, scrollregion=(-500, -500, width + 500, height + 500)) 
+        self.hbar = Scrollbar(self.frame, orient=HORIZONTAL)
+        self.hbar.pack(side=BOTTOM, fill=X)
+        self.hbar.config(command=self.canvas.xview)
+        self.vbar=Scrollbar(self.frame, orient=VERTICAL)
+        self.vbar.pack(side=RIGHT, fill=Y)
+        self.vbar.config(command=self.canvas.yview)
+        self.canvas.config(xscrollcommand=self.hbar.set, yscrollcommand=self.vbar.set)
+        self.canvas.pack(side=LEFT, expand=True, fill=BOTH)
         self.canvas_frame.pack(side=TOP)
         self.canvas.delete(ALL)
         self.offset = width // 2
@@ -62,10 +71,10 @@ class Modele():
     # Rendering du modele dans le canvas
     def render(self, canvas):
         canvas.create_line(
-            self.previous_step[0] * self.step_length + self.offset,
-            self.previous_step[1] * self.step_length + self.offset,
+            self.previous_step[0]  * self.step_length + self.offset,
+            self.previous_step[1] * -1 * self.step_length + self.offset,
             self.current_step[0] * self.step_length + self.offset,
-            self.current_step[1] * self.step_length + self.offset,
+            self.current_step[1] * -1 * self.step_length + self.offset,
         )
 
         if self.circle != None:
@@ -73,9 +82,9 @@ class Modele():
 
         self.circle = canvas.create_oval(
                 self.current_step[0] * self.step_length + self.offset,
-                self.current_step[1] * self.step_length + self.offset,
+                self.current_step[1] * -1 * self.step_length + self.offset,
                 self.current_step[0] * self.step_length + self.offset,
-                self.current_step[1] * self.step_length + self.offset,
+                self.current_step[1] * -1 * self.step_length + self.offset,
                 outline="red",
                 fill="red", 
                 width=5,
@@ -89,7 +98,7 @@ class Modele():
                 0 + self.offset,
                 0 + self.offset,
                 self.current_step[0] * self.step_length + self.offset,
-                self.current_step[1] * self.step_length + self.offset,
+                self.current_step[1] * -1 * self.step_length + self.offset,
                 dash=(4, 4),
                 fill="red"
             )
