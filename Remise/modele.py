@@ -26,7 +26,7 @@ class Modele():
         self.bframe = Frame(self.frame)
         self.bframe.pack(side=TOP)
         self.canvas_frame = Frame(self.frame, bd=2, relief=RAISED)
-        self.canvas = Canvas(self.canvas_frame, bg='white', width=width, height=height, scrollregion=(-500, -500, width + 500, height + 500)) 
+        self.canvas = Canvas(self.canvas_frame, bg='#f5fff8', width=width, height=height, scrollregion=(-500, -500, width + 500, height + 500)) 
         self.hbar = Scrollbar(self.frame, orient=HORIZONTAL)
         self.hbar.pack(side=BOTTOM, fill=X)
         self.hbar.config(command=self.canvas.xview)
@@ -41,8 +41,8 @@ class Modele():
         self.step_length = step_length
 
         # Écriture initial dans le canvas
-        self.step_text = f'Step {self.state}'
-        self.canvas_step_text = self.canvas.create_text(55, 20, fill="black", font="monaco", text=self.step_text)
+        self.step_text = f'Step {self.state} / {len(self.steps) - 1}'
+        self.canvas_step_text = self.canvas.create_text(90, 20, fill="black", font="monaco", text=self.step_text)
 
         self.xy_text = f'0'
         self.canvas_xy_text = self.canvas.create_text(150, 40, fill="black", font="monaco", text=self.xy_text)
@@ -65,7 +65,7 @@ class Modele():
         self.state = self.state + 1 
         if self.state < len(self.steps):
             self.current_step = self.steps[self.state]
-            self.step_text = f'Step {self.state}'
+            self.step_text = f'Step {self.state} / {len(self.steps) - 1}'
             self.xy_text = f'Current position: {self.current_step}'
 
     # Rendering du modele dans le canvas
@@ -114,4 +114,4 @@ class Modele():
                 self.canvas.update()
                 sleep(self.refreshTk)
 
-        sleep(int(5))
+        sleep(int(2))
