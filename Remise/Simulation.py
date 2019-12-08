@@ -48,48 +48,89 @@ def generate_one_to_x_csv(number_of_steps, executions, walk_type):
 
 def main():
     executions = 1
-    number_of_steps = 300
+    number_of_steps = 150
     walk_type = 'U' # 'C', 'S', 'U'
 
-    # Génère une marche pour le render
 
-    marche = Marche()
-    failed = marche.generate_z_steps(number_of_steps, walk_type)
+    ##### Génère une marche pour le render ##############################
+    #marche = Marche()
+    #failed = marche.generate_z_steps(number_of_steps, walk_type)
 
-    while failed:
-        marche.failed = False
-        failed = marche.generate_z_steps(number_of_steps, walk_type)
+    #while failed:
+    #    marche.failed = False
+    #    failed = marche.generate_z_steps(number_of_steps, walk_type)
 
-    window = Tk(); window.geometry("+0+0"); window.title("simulation")
-    modele = Modele(marche.get_steps(), master=window)
-    modele.run()
+    #window = Tk(); window.geometry("+0+0"); window.title("simulation")
+    #modele = Modele(marche.get_steps(), master=window)
+    #modele.run()
+    #####################################################################
 
-    # Génère et calcule la moyenne des distances au carrée des (executions) marches de (number_of_steps) pas
-    distances = []
-    fail_count = 0
-    for i in range(executions):
-        marche = Marche()
-        failed = marche.generate_z_steps(number_of_steps, walk_type)
 
-        while failed:
-            fail_count = fail_count + 1
-            marche.failed = False
-            failed = marche.generate_z_steps(number_of_steps, walk_type)
+    # Génère et calcule la moyenne des distances au carrée des (executions) marches de (number_of_steps) pas#
+    #distances = []
+    #fail_count = 0
+    #for i in range(executions):
+    #   marche = Marche()
+    #   failed = marche.generate_z_steps(number_of_steps, walk_type)
 
-        distances.append(marche.get_distance())
+    #    while failed:
+    #        fail_count = fail_count + 1
+    #        marche.failed = False
+    #        failed = marche.generate_z_steps(number_of_steps, walk_type)
+
+    #    distances.append(marche.get_distance())
 
      # Imprime la moyenne
-    print(statistics.mean(distances))
-    print(f'fails : {fail_count}')
-
+    #print(statistics.mean(distances))
+    #print(f'fails : {fail_count}')
+    ##########################################################################################################
 
     # Création d'un csv contenant la moyenne des distances au carrée de (executions) marches pour un nombre de pas allant de 1 jusqu'à (number_of_steps)
     # generate_one_to_x_csv(number_of_steps, executions, walk_type)
 
-    # Debugs #
-    # marche.display_walk() # Debug
-    # print(marche.get_previous_step())
-    # print(marche.get_distance())
+
+    ############ Partie 2 @###################################################################################
+    ##########################################################################################################
+
+    # Render 
+    #marche = Marche()
+    #failed = marche.generate_z_steps(number_of_steps, walk_type)
+
+    #while failed:
+    #    marche.failed = False
+    #    failed = marche.generate_z_steps(number_of_steps, walk_type)
+
+    #window = Tk(); window.geometry("+0+0"); window.title("simulation")
+    #modele = Modele(marche.get_steps(), master=window)
+    #modele.run()
+    ################
+
+
+    executions = 1
+    number_of_minutes = 150 # 1 step per minute on speed 1
+    walk_type = 'S' # 'C', 'S', 'U'
+
+    distances = []
+    fail_count = 0
+    for i in range(executions):
+        marche = Marche()
+        failed = marche.generate_z_martian_steps(number_of_minutes, walk_type)
+
+        while failed:
+            fail_count = fail_count + 1
+            marche.failed = False
+            failed = marche.generate_z_martian_steps(number_of_minutes, walk_type)
+
+        distances.append(marche.get_distance())
+
+    # Imprime la moyenne
+    print(statistics.mean(distances))
+    print(f'fails : {fail_count}')
+    print(f'meters : {len(marche.get_steps()) - 1}')
+
+    ###########################################################################################################
+
+
     return
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ class Marche():
         self.steps = [[0,0]]
         self.last_inverted_direction = None  # Cette variable représente la direction contraire du dernier pas (si le dernier pas est 0 (haut), self.last_inverted_direction = 1 (bas))
         self.failed = False
+        self.speed = 1
 
     def get_previous_step(self):
         return self.steps[-1]
@@ -91,3 +92,35 @@ class Marche():
     def get_distance(self):
         final = self.get_previous_step()
         return pow(final[0], 2) + pow(final[1], 2)
+
+    ##### PARTIE 2 #####
+    def generate_z_martian_steps(self, z, walk_type):
+        self.steps = [[0,0]]
+        for z in range(z):
+            speed = self.get_speed()
+            self.speed = speed
+            while speed > 0:
+                if self.failed:
+                    return True
+                self.generate_step(walk_type)
+                speed = speed - 1
+        return False
+
+    def get_speed(self):
+        test = random.randrange(13)
+        if test != 0 :
+            return self.speed
+
+        if self.speed == 1:
+            return 2
+
+        if self.speed == 2:
+            new_speed = random.randrange(2)
+            if new_speed == 0:
+                return 1 
+            return 3
+
+        if self.speed == 3:
+            return 2
+
+        return self.speed
