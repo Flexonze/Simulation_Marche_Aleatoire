@@ -1,5 +1,6 @@
 import random
 import math
+import csv
 
 class Marche():
     # step[0] = X
@@ -9,6 +10,7 @@ class Marche():
         self.last_inverted_direction = None  # Cette variable représente la direction contraire du dernier pas (si le dernier pas est 0 (haut), self.last_inverted_direction = 1 (bas))
         self.failed = False
         self.speed = 1
+        self.stop_durations = self.cvs_to_list()
 
     def get_previous_step(self):
         return self.steps[-1]
@@ -96,7 +98,9 @@ class Marche():
     ##### PARTIE 2 #####
     def generate_z_martian_steps(self, z, walk_type):
         self.steps = [[0,0]]
-        for z in range(z):
+        while z > 0:
+            stop = self.get_stop()
+            z = z - stop
             speed = self.get_speed()
             self.speed = speed
             while speed > 0:
@@ -107,7 +111,7 @@ class Marche():
         return False
 
     def get_speed(self):
-        test = random.randrange(13)
+        test = random.randrange(12)
         if test != 0 :
             return self.speed
 
@@ -124,3 +128,22 @@ class Marche():
             return 2
 
         return self.speed
+
+    def get_stop(self):
+        # 1206 / 172800 = Chance de faire un arrêt
+        # 67 / 9600
+        test = random.randrange(9600)
+        if test < 67:
+            test = random.randrange(len(self.stop_durations))
+            return int(self.stop_durations[test])
+        return 0
+
+    def cvs_to_list(self):
+        stops = []
+
+        with open(f'arrets.csv', 'r', newline='') as file:
+            reader = csv.reader(file, delimiter=',')
+            for row in reader:
+                stops.append(row[1])
+
+        return stops

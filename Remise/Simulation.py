@@ -55,9 +55,25 @@ def render_walk(number_of_steps, walk_type):
     marche = Marche()
     failed = marche.generate_z_steps(number_of_steps, walk_type)
 
+    fail_count = 0
     while failed:
         marche.failed = False
+        fail_count = fail_count + 1
+        print(fail_count)
         failed = marche.generate_z_steps(number_of_steps, walk_type)
+
+    window = Tk(); window.geometry("+0+0"); window.title("simulation")
+    modele = Modele(marche.get_steps(), master=window)
+    modele.run()
+
+def render_martian_walk(number_of_steps, walk_type):
+    """ Génère une marche pour le rendering """ 
+    marche = Marche()
+    failed = marche.generate_z_martian_steps(number_of_steps, walk_type)
+
+    while failed:
+        marche.failed = False
+        failed = marche.generate_z_martian_steps(number_of_steps, walk_type)
 
     window = Tk(); window.geometry("+0+0"); window.title("simulation")
     modele = Modele(marche.get_steps(), master=window)
@@ -82,10 +98,12 @@ def generate_walks(executions, number_of_steps, walk_type):
 
     print(statistics.mean(distances))
     print(f'fails : {fail_count}')
+    print(f'average fails : {fail_count / executions}')
 
 def generate_martian_walks(executions, number_of_minutes, walk_type):
     """ Génère (executions) marches de (number_of_minutes) minutes de type (walk_type) """
     distances = []
+    meters = []
     fail_count = 0
     for i in range(executions):
         marche = Marche()
@@ -97,34 +115,38 @@ def generate_martian_walks(executions, number_of_minutes, walk_type):
             failed = marche.generate_z_martian_steps(number_of_minutes, walk_type)
 
         distances.append(marche.get_distance())
+        meters.append(len(marche.get_steps()) - 1)
 
     # Imprime la moyenne
     print(statistics.mean(distances))
-    print(f'fails : {fail_count}')
-    print(f'meters : {len(marche.get_steps()) - 1}')
+    print(f'total fails : {fail_count}')
+    print(f'average meters : {statistics.mean(meters)}')
 
 def main():
-    executions = 1
-    number_of_steps = 150
-    walk_type = 'S' # 'C', 'S', 'U'
+    executions = 500
+    number_of_steps = 300
+    walk_type = 'U' # 'C', 'S', 'U'
 
     ## Render une marche ##
-    render_walk(number_of_steps, walk_type)
+    # render_walk(number_of_steps, walk_type)
 
     ## Génère (executions) marches de (number_of_steps) pas de type (walk_type) ##
-    generate_walks(executions, number_of_steps, walk_type)
+    # generate_walks(executions, number_of_steps, walk_type)
 
     ## Création d'un csv ##
     # generate_one_to_x_csv(number_of_steps, executions, walk_type)
 
     #### Partie 2 ####
-    executions = 1
-    number_of_minutes = 150 # 1 step per minute on speed 1
+    executions = 10000
+    number_of_minutes = 100
     walk_type = 'U' # 'C', 'S', 'U'
+
+    ## Render une marche ##
+    # render_martian_walk(number_of_minutes, walk_type)
 
     ## Génère (executions) marches de (number_of_minutes) minutes de type (walk_type) ##
     # generate_martian_walks(executions, number_of_minutes, walk_type)
-
+    
 
 
     return
